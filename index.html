@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>YOU CANNOT WIN</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: white;
+    font-family: "Comic Sans MS", cursive;
+    overflow: hidden;
+}
+
+#cross {
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    z-index: 999999;
+    font-size: 35px;
+    color: yellow;
+    background: red;
+    border: 5px dashed blue;
+    cursor: pointer;
+    transform: rotate(15deg);
+}
+
+.popup {
+    position: absolute;
+    width: 220px;
+    min-height: 125px;
+    padding: 10px;
+    border: 7px ridge lime;
+    box-shadow: 9px 9px 0 purple;
+    overflow-wrap: anywhere;
+    animation: shake 0.3s infinite alternate;
+}
+
+.popup h3 {
+    margin: 0;
+    font-size: 19px;
+    text-decoration: underline;
+}
+
+.popup p {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.popup button {
+    background: red;
+    color: yellow;
+    border: 3px dotted blue;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+@keyframes shake {
+    from { transform: rotate(-4deg); }
+    to { transform: rotate(4deg); }
+}
+</style>
+</head>
+
+<body>
+
+<button id="cross" onclick="spawnWave()">×</button>
+
+<script>
+
+let count = 0;
+
+const MAX = 100;
+
+const messages = [
+    "WHY DID YOU CLICK THAT?",
+    "ERROR 404: BRAIN NOT FOUND",
+    "I REFUSE TO CLOSE.",
+    "YOUR COMPUTER IS CONFUSED.",
+    "STOP CLICKING ME.",
+    "CONGRATULATIONS! YOU MADE IT WORSE.",
+    "SYSTEM FAILURE!!!",
+    "THIS IS A TERRIBLE WEBSITE.",
+    "PLEASE CONTACT NOBODY.",
+    "YOU HAVE UNLOCKED NOTHING.",
+    "POPUP NUMBER 938473.",
+    "WHY AM I ALIVE?",
+    "YOUR MOUSE HAS BETRAYED YOU.",
+    "NO REFUNDS.",
+    "ERROR ERROR ERROR"
+];
+
+const colors = [
+    "yellow", "hotpink", "cyan",
+    "lime", "orange", "violet",
+    "lightblue", "red"
+];
+
+function spawnWave() {
+    for (let i = 0; i < 15; i++) {
+        createPopup();
+    }
+}
+
+function createPopup() {
+
+    if (count >= MAX) return;
+
+    count++;
+
+    const popup = document.createElement("div");
+    popup.className = "popup";
+
+    const x = Math.random() *
+        Math.max(0, window.innerWidth - 230);
+
+    const y = Math.random() *
+        Math.max(0, window.innerHeight - 140);
+
+    const color = colors[
+        Math.floor(Math.random() * colors.length)
+    ];
+
+    const message = messages[
+        Math.floor(Math.random() * messages.length)
+    ];
+
+    popup.style.left = x + "px";
+    popup.style.top = y + "px";
+    popup.style.background = color;
+    popup.style.zIndex = count + 10;
+
+    popup.innerHTML = `
+        <button>×</button>
+        <h3>!!! SYSTEM ERROR !!!</h3>
+        <p>${message}</p>
+        <p>POPUP #${count}</p>
+        <button class="more">MAKE IT WORSE</button>
+    `;
+
+    popup.querySelector("button").onclick = () => {
+        popup.remove();
+        count--;
+        spawnWave();
+    };
+
+    popup.querySelector(".more").onclick = () => {
+        spawnWave();
+    };
+
+    document.body.appendChild(popup);
+}
+
+</script>
+
+</body>
+</html>
